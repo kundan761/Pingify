@@ -226,3 +226,81 @@ MIT
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+```# ============================================
+# SERVER CONFIGURATION
+# ============================================
+PORT=5000
+NODE_ENV=development
+
+# ============================================
+# MONGODB CONFIGURATION
+# ============================================
+# Local MongoDB
+MONGODB_URI=mongodb://127.0.0.1:27017/pingify
+
+# MongoDB Atlas (Alternative)
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/pingify?retryWrites=true&w=majority
+
+# ============================================
+# REDIS CONFIGURATION
+# ============================================
+REDIS_USERNAME='default'
+REDIS_PASSWORD=hI1pY3XzRHiOOq9vTqT8fYFeyIYYyXtJ
+REDIS_HOST=redis-18924.c99.us-east-1-4.ec2.redns.redis-cloud.com
+REDIS_PORT=18924
+
+# ============================================
+# JWT CONFIGURATION
+# ============================================
+# Generate strong secrets using: openssl rand -base64 32
+JWT_SECRET=your-super-secret-jwt-key-change-this-in-production-min-32-chars
+JWT_REFRESH_SECRET=your-super-secret-refresh-key-change-this-in-production-min-32-chars
+JWT_EXPIRE=15m
+JWT_REFRESH_EXPIRE=7d
+
+# ============================================
+# CLOUDINARY CONFIGURATION
+# ============================================
+# Get these from: https://cloudinary.com/console
+CLOUDINARY_CLOUD_NAME=CLOUDINARY-STORAGE
+CLOUDINARY_API_KEY=141321755467785
+CLOUDINARY_API_SECRET=SsxiDubzuyzMH4bnRjP69ccSmc0
+
+# ============================================
+# EMAIL CONFIGURATION (Nodemailer)
+# ============================================
+# Gmail SMTP Settings
+EMAIL_HOST=kundankumarsuraj761@gmail.com
+EMAIL_PORT=587
+EMAIL_USER=kundankumarsuraj761@gmail.com
+EMAIL_PASS=zysn qrcd spzt wbin
+EMAIL_FROM=wugawywy@denipl.com
+
+# Gmail App Password Setup:
+# 1. Go to Google Account Settings
+# 2. Security > 2-Step Verification > App passwords
+# 3. Generate app password for "Mail"
+# 4. Use that password in EMAIL_PASS
+
+# ============================================
+# FRONTEND CONFIGURATION
+# ============================================
+FRONTEND_URL=http://localhost:5173
+
+# ============================================
+# CORS CONFIGURATION
+# ============================================
+CORS_ORIGIN=http://localhost:5173
+
+# Production Example:
+# CORS_ORIGIN=https://yourdomain.com
+
+# ============================================
+# NOTES
+# ============================================
+# 1. Copy this file to .env: cp .env.example .env
+# 2. Replace all placeholder values with your actual credentials
+# 3. Never commit .env file to version control
+# 4. For production, use environment variables or secure secret management
+# 5. Generate strong JWT secrets using: openssl rand -base64 32
+```

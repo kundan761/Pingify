@@ -226,29 +226,5 @@ MIT
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-```
-# ============================================
-# API CONFIGURATION
-# ============================================
-# Backend API URL
-VITE_API_BASE_URL=http://localhost:5000
-
-# Socket.io Server URL
-VITE_SOCKET_URL=http://localhost:5000
-
-# ============================================
-# PRODUCTION CONFIGURATION
-# ============================================
-# Production Example:
-# VITE_API_BASE_URL=https://api.yourdomain.com
-# VITE_SOCKET_URL=https://api.yourdomain.com
-
-# ============================================
-# NOTES
-# ============================================
-# 1. Copy this file to .env.local: cp .env.example .env.local
-# 2. Vite uses VITE_ prefix for environment variables
-# 3. Access in code: import.meta.env.VITE_API_BASE_URL
-# 4. Never commit .env.local file to version control
 
 ```

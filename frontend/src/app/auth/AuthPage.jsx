@@ -8,10 +8,10 @@ import toast from 'react-hot-toast';
 
 const SLIDES = { FORM: 0, OTP: 1, SUCCESS: 2 };
 const OTP_LENGTH = 6;
-const OTP_EXPIRY = 300; // 5 minutes in seconds
+const OTP_EXPIRY = 300;
 
 function AuthPage() {
-  const [mode, setMode] = useState('login'); // 'login' or 'signup'
+  const [mode, setMode] = useState('login');
   const [slide, setSlide] = useState(SLIDES.FORM);
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -25,7 +25,6 @@ function AuthPage() {
   const navigate = useNavigate();
   const { loading, otpSent, error } = useSelector(selectAuth);
 
-  // Timer countdown
   useEffect(() => {
     if (slide === SLIDES.OTP) {
       setTimer(OTP_EXPIRY);
@@ -45,7 +44,6 @@ function AuthPage() {
     }
   }, [slide]);
 
-  // Navigate to OTP slide when OTP is sent
   useEffect(() => {
     if (otpSent && slide === SLIDES.FORM) {
       setSlide(SLIDES.OTP);
@@ -110,12 +108,9 @@ function AuthPage() {
     newOtp[index] = value.slice(-1);
     setOtp(newOtp);
 
-    // Auto-focus next input
     if (value && index < OTP_LENGTH - 1) {
       otpRefs.current[index + 1]?.focus();
     }
-
-    // Auto-submit when last digit entered
     if (value && index === OTP_LENGTH - 1) {
       const fullOtp = newOtp.join('');
       if (fullOtp.length === OTP_LENGTH) {
@@ -197,9 +192,7 @@ function AuthPage() {
 
   return (
     <div className="min-h-screen flex app-bg">
-      {/* Left Brand Panel */}
       <div className="hidden lg:flex lg:w-1/2 flex-col auth-brand-panel relative overflow-hidden">
-        {/* Animated background shapes */}
         <div className="absolute inset-0">
           <motion.div
             animate={{ y: [0, -20, 0], rotate: [0, 5, 0] }}
@@ -222,7 +215,6 @@ function AuthPage() {
         </div>
 
         <div className="relative z-10 flex flex-col h-full px-10 py-12">
-          {/* Logo */}
           <div className="flex items-center gap-3 mb-auto">
             <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.2)' }}>
               <FiMessageCircle className="w-7 h-7 text-white" />
@@ -230,7 +222,6 @@ function AuthPage() {
             <span className="text-white text-2xl font-semibold tracking-tight">Pingify</span>
           </div>
 
-          {/* Main content */}
           <div className="my-auto">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -274,7 +265,6 @@ function AuthPage() {
             </div>
           </div>
 
-          {/* Footer */}
           <p className="text-white/40 text-[13px] mt-auto">
             © {new Date().getFullYear()} Pingify. Secure Messaging.
           </p>

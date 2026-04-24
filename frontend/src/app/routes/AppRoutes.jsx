@@ -17,7 +17,6 @@ function AppRoutes() {
     <Routes>
       <Route element={<PublicRoute />}>
         <Route path="/auth" element={<AuthPage />} />
-        {/* Redirect old routes to /auth */}
         <Route path="/auth/login" element={<Navigate to="/auth" replace />} />
         <Route path="/auth/register" element={<Navigate to="/auth" replace />} />
         <Route path="/auth/forgot-password" element={<Navigate to="/auth" replace />} />

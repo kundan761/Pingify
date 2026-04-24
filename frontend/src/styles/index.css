@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #F5F5F5;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #F0F2F5;
+    --bg-chat: #EFEAE2;
+    --text-primary: #111B21;
+    --text-secondary: #667781;
+    --border-color: #E9EDEF;
+    --border-light: #F0F2F5;
+    --accent-color: #00A884;
+    --accent-hover: #06CF9C;
+    --chat-bubble-sent: #D9FDD3;
+    --chat-bubble-received: #FFFFFF;
+    --input-bg: #FFFFFF;
+  }
+
+  .dark {
+    --bg-primary: #111B21;
+    --bg-secondary: #202C33;
+    --bg-tertiary: #2A3942;
+    --bg-chat: #0B141A;
+    --text-primary: #E9EDEF;
+    --text-secondary: #8696A0;
+    --border-color: #2A3942;
+    --border-light: #202C33;
+    --accent-color: #00A884;
+    --accent-hover: #008f6f;
+    --chat-bubble-sent: #005C4B;
+    --chat-bubble-received: #202C33;
+    --input-bg: #2A3942;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    @apply min-h-screen transition-colors duration-200;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    @apply rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--bg-tertiary);
+  }
+}
+
+@layer components {
+  .app-bg {
+    background-color: var(--bg-primary);
+    @apply transition-colors duration-200;
+  }
+
+  .sidebar-bg {
+    background-color: var(--bg-secondary);
+    @apply transition-colors duration-200;
+  }
+
+  .chat-bg {
+    background-color: var(--bg-chat);
+    background-image: 
+      radial-gradient(circle at 20% 50%, rgba(0, 168, 132, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0, 168, 132, 0.03) 0%, transparent 50%);
+    @apply transition-colors duration-200;
+  }
+
+  .info-panel-bg {
+    background-color: var(--bg-secondary);
+    @apply transition-colors duration-200;
+  }
+
+  .card {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    @apply rounded-lg shadow-sm transition-colors duration-200 border;
+  }
+
+  .card-hover {
+    @apply card cursor-pointer;
+  }
+
+  .card-hover:hover {
+    background-color: var(--bg-tertiary);
+  }
+
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium text-white transition-all duration-200;
+    @apply bg-[#00A884] hover:bg-[#06CF9C] active:bg-[#008069];
+    @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 rounded-lg font-medium text-[#00A884] transition-colors border border-[#00A884];
+    background-color: var(--bg-secondary);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--bg-tertiary);
+  }
+
+  .btn-ghost {
+    color: var(--text-primary);
+    @apply px-4 py-2 rounded-lg font-medium transition-colors;
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--bg-tertiary);
+  }
+
+  .input {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    @apply w-full px-4 py-2 rounded-lg border transition-all duration-200;
+    @apply focus:outline-none focus:ring-2 focus:ring-[#00A884] focus:border-transparent;
+  }
+
+  .input::placeholder {
+    color: var(--text-secondary);
+  }
+
+  /* Auth Page specific classes */
+  .auth-input {
+    @apply input py-3 text-base;
+  }
+
+  .auth-button {
+    @apply btn-primary w-full py-3 text-base flex justify-center items-center gap-2;
+  }
+
+  .otp-input {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    @apply w-12 h-14 text-center text-xl font-bold rounded-xl border;
+    @apply focus:outline-none focus:ring-2 focus:ring-[#00A884] focus:border-transparent transition-all duration-200;
+  }
+
+  .auth-brand-panel {
+    background: linear-gradient(135deg, #00A884 0%, #06CF9C 100%);
+  }
+
+  .chat-bubble {
+    @apply px-3 py-2 rounded-lg break-words shadow-sm transition-colors duration-200;
+    position: relative;
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .chat-bubble-sent {
+    background-color: var(--chat-bubble-sent);
+    color: var(--text-primary);
+    border-top-right-radius: 4px;
+  }
+
+  .chat-bubble-received {
+    background-color: var(--chat-bubble-received);
+    color: var(--text-primary);
+    border-top-left-radius: 4px;
+  }
+
+  .chat-bubble-sent::after {
+    content: '';
+    position: absolute;
+    right: -8px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: 8px solid var(--chat-bubble-sent);
+    border-bottom: 8px solid transparent;
+  }
+
+  .chat-bubble-received::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-right: 8px solid var(--chat-bubble-received);
+    border-bottom: 8px solid transparent;
+  }
+
+  .badge {
+    @apply px-2 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-online {
+    @apply badge bg-[#00A884] text-white;
+  }
+
+  .badge-offline {
+    background-color: var(--bg-secondary);
+    @apply badge text-white;
+  }
+
+  .avatar {
+    @apply rounded-full flex items-center justify-center font-medium;
+    @apply bg-[#00A884] text-white;
+  }
+
+  .avatar-sm {
+    @apply avatar w-8 h-8 text-xs;
+  }
+
+  .avatar-md {
+    @apply avatar w-10 h-10 text-sm;
+  }
+
+  .avatar-lg {
+    @apply avatar w-14 h-14 text-base;
+  }
+
+  .avatar-xl {
+    @apply avatar w-20 h-20 text-xl;
+  }
+
+  .divider {
+    border-top-color: var(--border-color);
+    @apply border-t my-4 transition-colors duration-200;
+  }
+
+  .spinner {
+    border-color: var(--border-color);
+    @apply inline-block w-5 h-5 border-2 border-t-[#00A884] rounded-full;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .text-primary {
+    color: var(--text-primary);
+    @apply transition-colors duration-200;
+  }
+
+  .text-secondary {
+    color: var(--text-secondary);
+    @apply transition-colors duration-200;
+  }
+
+  .text-accent {
+    color: var(--accent-color);
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .highlight-message {
+    animation: highlight 2s ease-in-out;
+  }
+
+  @keyframes highlight {
+    0%, 100% {
+      background-color: transparent;
+    }
+    50% {
+      background-color: rgba(0, 168, 132, 0.2);
+    }
+  }
+}

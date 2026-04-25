@@ -249,7 +249,7 @@ function Sidebar() {
 
       <div className="px-4 py-2 bg-secondary">
         <button
-          onClick={() => navigate('/?newChat=true')}
+          onClick={() => navigate('/')}
           className="w-full btn-primary flex items-center justify-center gap-2 py-2.5"
         >
           <FiPlus className="w-4 h-4" />

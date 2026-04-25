@@ -54,6 +54,18 @@ const messageSchema = new mongoose.Schema(
         },
       },
     ],
+    deliveredTo: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        deliveredAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     reactions: [
       {
         user: {

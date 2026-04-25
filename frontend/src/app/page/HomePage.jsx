@@ -15,6 +15,7 @@ import { selectAuth } from '../../store/slices/authSlice.js';
 import { createChat, fetchChats } from '../../store/slices/chatSlice.js';
 import { searchUsers, clearSearchResults } from '../../store/slices/userSlice.js';
 import * as groupService from '../../services/groupService.js';
+import { getIdString } from '../../utils/helpers.js';
 import toast from 'react-hot-toast';
 
 function HomePage() {
@@ -29,6 +30,7 @@ function HomePage() {
   const [groupDescription, setGroupDescription] = useState('');
   const [selectedUsers, setSelectedUsers] = useState([]);
   const { searchResults, loading: searchLoading } = useSelector((state) => state.user);
+  const { chats } = useSelector((state) => state.chat);
   const [searchParams, setSearchParams] = useSearchParams();
   const newChatSearchTimeoutRef = useRef(null);
   const groupSearchTimeoutRef = useRef(null);
@@ -264,34 +266,45 @@ function HomePage() {
               </div>
 
               <div className="space-y-2 max-h-60 overflow-y-auto">
-                {searchResults.map((result) => (
-                  <motion.div
-                    key={result._id}
-                    whileHover={{ backgroundColor: 'var(--bg-tertiary)' }}
-                    whileTap={{ backgroundColor: 'var(--bg-tertiary)' }}
-                    onClick={() => handleCreateChat(result._id)}
-                    className="card-hover p-3 cursor-pointer"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="avatar-md">
-                        {result.avatar ? (
-                          <img
-                            src={result.avatar}
-                            alt={result.username}
-                            className="w-full h-full rounded-full object-cover"
-                          />
+                {searchResults.map((result) => {
+                  const existingChat = chats.find(c => 
+                    c.chatType === 'private' && 
+                    c.participants.some(p => getIdString(p._id || p) === result._id)
+                  );
+                  
+                  return (
+                    <motion.div
+                      key={result._id}
+                      whileHover={{ backgroundColor: 'var(--bg-tertiary)' }}
+                      whileTap={{ backgroundColor: 'var(--bg-tertiary)' }}
+                      onClick={() => existingChat ? (navigate(`/chat/${existingChat._id}`), setShowNewChatModal(false)) : handleCreateChat(result._id)}
+                      className="card-hover p-3 cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="avatar-md">
+                          {result.avatar ? (
+                            <img
+                              src={result.avatar}
+                              alt={result.username}
+                              className="w-full h-full rounded-full object-cover"
+                            />
+                          ) : (
+                            <span className="text-white">{result.username?.[0] || 'U'}</span>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-primary font-medium">{result.username}</p>
+                          <p className="text-secondary text-sm">{result.email}</p>
+                        </div>
+                        {existingChat ? (
+                          <span className="text-accent text-xs font-medium px-2 py-1 bg-accent/10 rounded">Chat exists</span>
                         ) : (
-                          <span className="text-white">{result.username?.[0] || 'U'}</span>
+                          <FiUserPlus className="w-5 h-5 text-secondary" />
                         )}
                       </div>
-                      <div className="flex-1">
-                        <p className="text-primary font-medium">{result.username}</p>
-                        <p className="text-secondary text-sm">{result.email}</p>
-                      </div>
-                      <FiUserPlus className="w-5 h-5 text-secondary" />
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </motion.div>
           </motion.div>

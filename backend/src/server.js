@@ -112,6 +112,31 @@ io.on('connection', async (socket) => {
     }
   });
 
+
+  socket.on('mark-delivered', async (data) => {
+    try {
+      const { messageIds, chatId } = data;
+      if (!messageIds || !Array.isArray(messageIds)) return;
+
+      for (const messageId of messageIds) {
+        const message = await Message.findById(messageId);
+        if (message && !message.deliveredTo.some(d => d.user.toString() === userId)) {
+          message.deliveredTo.push({ user: userId });
+          await message.save();
+          
+          socket.to(`user:${message.sender}`).emit('message-delivered', {
+            messageId,
+            chatId,
+            userId,
+            deliveredAt: new Date(),
+          });
+        }
+      }
+    } catch (error) {
+      logger.error(`Mark delivered error: ${error.message}`);
+    }
+  });
+
   socket.on('mark-read', async (data) => {
     try {
       const { chatId } = data;
@@ -124,11 +149,23 @@ io.on('connection', async (socket) => {
         });
 
         for (const message of unreadMessages) {
-          message.readBy.push({ user: userId });
-          await message.save();
+          let updated = false;
+          if (!message.readBy.some(r => r.user.toString() === userId)) {
+            message.readBy.push({ user: userId });
+            updated = true;
+          }
+          if (!message.deliveredTo.some(d => d.user.toString() === userId)) {
+            message.deliveredTo.push({ user: userId });
+            updated = true;
+          }
+          if (updated) await message.save();
         }
 
         socket.to(`chat:${chatId}`).emit('messages-read', {
+          chatId,
+          userId,
+        });
+        socket.to(`chat:${chatId}`).emit('messages-delivered', {
           chatId,
           userId,
         });

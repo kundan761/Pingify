@@ -163,45 +163,54 @@
   }
 
   .chat-bubble {
-    @apply px-3 py-2 rounded-lg break-words shadow-sm transition-colors duration-200;
+    @apply px-3 py-1.5 rounded-xl break-words transition-colors duration-200;
     position: relative;
     display: block;
     width: fit-content;
     max-width: 100%;
+    font-size: 14.5px;
+    line-height: 20px;
+    box-shadow: 0 1px 0.5px rgba(0, 0, 0, 0.13);
   }
 
   .chat-bubble-sent {
     background-color: var(--chat-bubble-sent);
     color: var(--text-primary);
-    border-top-right-radius: 4px;
   }
 
   .chat-bubble-received {
     background-color: var(--chat-bubble-received);
     color: var(--text-primary);
-    border-top-left-radius: 4px;
   }
 
-  .chat-bubble-sent::after {
+  .chat-bubble-sent.has-tail {
+    border-top-right-radius: 0;
+  }
+
+  .chat-bubble-received.has-tail {
+    border-top-left-radius: 0;
+  }
+
+  .chat-bubble-sent.has-tail::after {
     content: '';
     position: absolute;
+    top: 0;
     right: -8px;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border-left: 8px solid var(--chat-bubble-sent);
-    border-bottom: 8px solid transparent;
+    width: 12px;
+    height: 19px;
+    background-color: var(--chat-bubble-sent);
+    clip-path: polygon(0 0, 0 100%, 100% 0);
   }
 
-  .chat-bubble-received::before {
+  .chat-bubble-received.has-tail::before {
     content: '';
     position: absolute;
+    top: 0;
     left: -8px;
-    bottom: 0;
-    width: 0;
-    height: 0;
-    border-right: 8px solid var(--chat-bubble-received);
-    border-bottom: 8px solid transparent;
+    width: 12px;
+    height: 19px;
+    background-color: var(--chat-bubble-received);
+    clip-path: polygon(100% 0, 100% 100%, 0 0);
   }
 
   .badge {

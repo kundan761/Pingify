@@ -100,6 +100,16 @@ const chatSlice = createSlice({
         state.currentChat = { ...state.currentChat, participants: updatedParticipants };
       }
     },
+    updateLastMessage: (state, action) => {
+      const { chatId, message } = action.payload;
+      const index = state.chats.findIndex((c) => c._id === chatId);
+      if (index !== -1) {
+        state.chats[index].lastMessage = message;
+        // Move chat to top
+        const chat = state.chats.splice(index, 1)[0];
+        state.chats.unshift(chat);
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -162,5 +172,5 @@ const chatSlice = createSlice({
   },
 });
 
-export const { setCurrentChat, addChat, updateChat, removeChat, updateUserOnlineStatus } = chatSlice.actions;
+export const { setCurrentChat, addChat, updateChat, removeChat, updateUserOnlineStatus, updateLastMessage } = chatSlice.actions;
 export default chatSlice.reducer;

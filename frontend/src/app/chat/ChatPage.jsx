@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { motion } from 'framer-motion';
 import { FiSend, FiPaperclip, FiSmile, FiMoreVertical, FiSearch, FiInfo, FiX, FiImage, FiFile, FiVideo, FiMusic, FiTrash2 } from 'react-icons/fi';
 import { fetchMessages, sendMessage, setTyping, addMessage, updateMessage, markAllMessagesAsRead, forwardMessage, clearChat, clearMessages } from '../../store/slices/messageSlice.js';
-import { getChat, fetchChats } from '../../store/slices/chatSlice.js';
+import { getChat, fetchChats, updateLastMessage } from '../../store/slices/chatSlice.js';
 import { useSocket } from '../../hooks/useSocket.js';
 import { getSocket } from '../../services/socketService.js';
 import { selectAuth } from '../../store/slices/authSlice.js';
@@ -20,6 +20,7 @@ import {
   getIdString,
   getOtherParticipantFromChat,
 } from '../../utils/helpers.js';
+import { isEncryptedPayload, decryptMessage } from '../../utils/crypto.js';
 import toast from 'react-hot-toast';
 
 function ChatPage() {
@@ -64,7 +65,12 @@ function ChatPage() {
         } else if (message.chat === chatId) {
           // Mark as read if we are in this chat
           socket.emit('mark-read', { chatId });
+        } else {
+          // Mark as delivered if we are not in the chat but received the message via socket
+          socket.emit('mark-delivered', { messageIds: [message._id], chatId: message.chat });
         }
+        // Update sidebar last message
+        dispatch(updateLastMessage({ chatId: message.chat, message }));
       };
 
       const handleTyping = (data) => {
@@ -74,9 +80,9 @@ function ChatPage() {
       const handleMessageUpdated = (message) => {
         if (message.chat === chatId) {
           dispatch(updateMessage(message));
-          // If message is deleted, also update sidebar preview
-          dispatch(fetchChats()); 
         }
+        // Always update sidebar preview if it's the last message
+        dispatch(updateLastMessage({ chatId: message.chat, message }));
       };
 
       const handleMessagesRead = (data) => {
@@ -261,10 +267,25 @@ function ChatPage() {
   const handleForwardConfirm = async (targetChatIds) => {
     if (!messageToForward) return;
     try {
-      await dispatch(forwardMessage({
-        messageId: messageToForward._id,
-        targetChatIds
-      })).unwrap();
+      // For E2EE messages, we must decrypt and re-send to each chat to ensure proper encryption for new recipients
+      if (messageToForward.messageType === 'text' && isEncryptedPayload(messageToForward.content)) {
+        const privateKey = localStorage.getItem('privateKey');
+        const decryptedContent = await decryptMessage(messageToForward.content, privateKey, user._id);
+        
+        for (const targetChatId of targetChatIds) {
+          await dispatch(sendMessage({
+            chatId: targetChatId,
+            content: decryptedContent,
+            messageType: 'text'
+          })).unwrap();
+        }
+      } else {
+        // For non-encrypted messages, we can use the efficient server-side forward
+        await dispatch(forwardMessage({
+          messageId: messageToForward._id,
+          targetChatIds
+        })).unwrap();
+      }
       toast.success('Message forwarded successfully');
       setShowForwardModal(false);
       setMessageToForward(null);
@@ -463,13 +484,14 @@ function ChatPage() {
           </div>
         )}
 
-        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-1">
+        <div className="flex-1 overflow-y-auto px-4 py-2 space-y-3">
           {chatMessages.map((message, index) => {
             const senderId = getIdString(message.sender?._id || message.sender);
             const userId = getIdString(user?._id);
             const isSent = compareIds(senderId, userId);
             const prevMessage = index > 0 ? chatMessages[index - 1] : null;
-            const showAvatar = !isSent && (!prevMessage || getIdString(prevMessage.sender?._id || prevMessage.sender) !== senderId);
+            const isFirstInSequence = !prevMessage || getIdString(prevMessage.sender?._id || prevMessage.sender) !== senderId;
+            const showAvatar = !isSent && isFirstInSequence;
             const sender = typeof message.sender === 'object' ? message.sender : null;
 
             const otherParticipantId = currentChat?.participants?.find(p => {
@@ -491,6 +513,7 @@ function ChatPage() {
                   onReply={handleReply}
                   onForward={handleForward}
                   isGroupChat={currentChat?.chatType === 'group'}
+                  showTail={isFirstInSequence}
                 />
               </div>
             );

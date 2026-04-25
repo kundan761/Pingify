@@ -32,10 +32,15 @@ export const sendMessage = asyncHandler(async (req, res) => {
         io.to(`user:${pId}`).emit('new-message', messageData);
         
         if (pId !== req.user.userId) {
+          const notificationTitle = chat.chatType === 'group' ? chat.name : 'New Message';
+          const notificationMessage = chat.chatType === 'group' 
+            ? `${req.user.username} in ${chat.name}: ${message.content.substring(0, 50)}`
+            : `${req.user.username}: ${message.content.substring(0, 50)}`;
+
           await notificationsService.createNotification(participantId, {
             type: 'message',
-            title: 'New Message',
-            message: `${req.user.email} sent you a message`,
+            title: notificationTitle,
+            message: notificationMessage,
             link: `/chat/${chatId}`,
             metadata: { chatId, messageId: message._id },
           });

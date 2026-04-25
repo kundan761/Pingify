@@ -2,6 +2,22 @@
 
 A complete MERN stack real-time chat application with modern architecture, glassmorphic UI, and advanced messaging features.
 
+## 🌐 Live Links
+
+- **Frontend**: [Link](https://pingify-one.vercel.app)
+- **Backend API**: [Link](https://pingify-8j34.onrender.com)
+
+## 📸 Project Screenshots
+
+### Home Page
+![Home Page](./assets/Dashboard.png)
+
+### Registration & Onboarding
+![Registration](./assets/Registration.png)
+
+### Individual Chat Interface
+![Individual Chat Interface](./assets/individual-chat.png)
+
 ## 🚀 Features
 
 ### Core Messaging
@@ -71,17 +87,6 @@ A complete MERN stack real-time chat application with modern architecture, glass
 - **Chat Sidebar**: Quick access to all conversations
 - **Info Panel**: Detailed chat information and media gallery
 
-
-## 📸 Screenshots
-
-### Dashboard
-![Dashboard](./assets/Dashboard.png)
-
-### Registration & Onboarding
-![Registration](./assets/Registration.png)
-
-### Individual Chat Interface
-![Individual Chat Interface](./assets/individual-chat.png)
 
 ## 📁 Project Structure
 

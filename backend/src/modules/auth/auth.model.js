@@ -84,8 +84,6 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.index({ email: 1 });
-userSchema.index({ username: 1 });
 userSchema.index({ email: 'text', username: 'text' });
 
 userSchema.pre('save', async function (next) {

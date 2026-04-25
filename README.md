@@ -9,11 +9,11 @@ A complete MERN stack real-time chat application with modern architecture, glass
 
 ## 📸 Project Screenshots
 
-### Home Page
-![Home Page](./assets/Dashboard.png)
-
 ### Registration & Onboarding
 ![Registration](./assets/Registration.png)
+
+### Home Page
+![Home Page](./assets/Dashboard.png)
 
 ### Individual Chat Interface
 ![Individual Chat Interface](./assets/individual-chat.png)

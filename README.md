@@ -1,6 +1,6 @@
 # Pingify - Real-time Chat Application
 
-A complete MERN stack real-time chat application with modern architecture, glassmorphic UI, and advanced messaging features.
+A complete MERN stack real-time chat application with modern architecture, and advanced messaging features.
 
 ## 🌐 Live Links
 
@@ -79,7 +79,6 @@ A complete MERN stack real-time chat application with modern architecture, glass
 - **Password Hashing**: Argon2 secure password hashing
 
 ### UI/UX
-- **Glassmorphic Design**: Modern glassmorphism UI with backdrop blur effects
 - **Responsive Layout**: Mobile-friendly responsive design
 - **Smooth Animations**: Framer Motion powered transitions
 - **Dark/Light Theme Support**: TailwindCSS based styling

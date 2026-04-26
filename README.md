@@ -1,6 +1,6 @@
 # Pingify - Real-time Chat Application
 
-A complete MERN stack real-time chat application with modern architecture, and advanced messaging features.
+Pingify is a complete MERN (MongoDB, Express.js, React.js, Node.js) stack real-time chat application that features modern architecture and advanced messaging capabilities. It provides a user-friendly interface for seamless communication and enhances user experience with real-time messaging functionalities.
 
 ## 🌐 Live Links
 
